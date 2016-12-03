@@ -47,6 +47,8 @@ namespace Obisoft_OSS
                 app.UseExceptionHandler("/Home/Error");
             }
 
+            //app.UseDirectoryBrowser();
+            //app.UseDefaultFiles();
             app.UseStaticFiles();
 
             app.UseMvc(routes =>
