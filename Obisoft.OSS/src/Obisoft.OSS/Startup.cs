@@ -8,7 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace Obisoft_OSS
+namespace Obisoft.OSS
 {
     public class Startup
     {

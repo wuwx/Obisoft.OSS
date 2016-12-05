@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.25920.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{BB16A727-4EB2-4873-8584-0D207CE5641E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Obisoft-OSS", "src\Obisoft-OSS\Obisoft-OSS.csproj", "{51C438EF-93FF-453D-87E6-D9D25FFBC674}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Obisoft.OSS", "src\Obisoft.OSS\Obisoft.OSS.csproj", "{51C438EF-93FF-453D-87E6-D9D25FFBC674}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

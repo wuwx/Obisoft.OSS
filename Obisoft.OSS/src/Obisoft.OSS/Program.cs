@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 
-namespace Obisoft_OSS
+namespace Obisoft.OSS
 {
     public class Program
     {

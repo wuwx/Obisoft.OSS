@@ -7,7 +7,7 @@ using System.IO;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace Obisoft_OSS.Controllers
+namespace Obisoft.OSS.Controllers
 {
     [RequireHttps]
     public class HomeController : Controller
