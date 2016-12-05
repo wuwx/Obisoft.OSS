@@ -9,6 +9,7 @@ using System.IO;
 
 namespace Obisoft_OSS.Controllers
 {
+    [RequireHttps]
     public class HomeController : Controller
     {
         // GET: /<controller>/
@@ -20,20 +21,27 @@ namespace Obisoft_OSS.Controllers
         [HttpPost]
         public async Task<JsonResult> Index(string id)
         {
-            var file = Request.Form.Files["file"];
-            string fileExtension = Path.GetExtension(file.FileName).ToLower();
-            if (file != null && file.Length < 8192000)
+            try
             {
-                var _wwwroot = Directory.GetCurrentDirectory() + @"\wwwroot";
-                var _filename = Path.GetFileName(file.FileName);
-                var _path = _wwwroot + @"\" + _filename;
-                var _fileStream = new FileStream(path: _path, mode: FileMode.Create);
-                await file.CopyToAsync(_fileStream);
-                _fileStream.Dispose();
-                var FileWebName = Request.Scheme + "://" + Request.Host.ToString() + Request.Path+_filename;
-                return Json(new { path = FileWebName, code = 0 });
+                var file = Request.Form.Files[0];
+                string fileExtension = Path.GetExtension(file.FileName).ToLower();
+                if (file != null && file.Length < 8192000)
+                {
+                    var _wwwroot = Directory.GetCurrentDirectory() + @"\wwwroot";
+                    var _filename = Path.GetFileName(file.FileName).Replace(" ","_");
+                    var _path = _wwwroot + @"\" + _filename;
+                    var _fileStream = new FileStream(path: _path, mode: FileMode.Create);
+                    await file.CopyToAsync(_fileStream);
+                    _fileStream.Dispose();
+                    var FileWebName = Request.Scheme + "://" + Request.Host.ToString() + Request.Path + _filename;
+                    return Json(new { path = FileWebName, code = 0 });
+                }
+                return Json(new { code = -1 });
             }
-            return Json(new { code = -1 });
+            catch
+            {
+                return Json(new { code = -4 });
+            }
         }
     }
 }

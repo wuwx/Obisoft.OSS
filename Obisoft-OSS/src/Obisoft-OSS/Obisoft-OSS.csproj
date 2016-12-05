@@ -73,9 +73,6 @@
     <Content Remove="wwwroot\usericons\**" />
     <EmbeddedResource Remove="wwwroot\usericons\**" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="wwwroot\" />
-  </ItemGroup>
   <!--
    <Target Name="BeforePublish">
     <Exec Command="bower install" />
