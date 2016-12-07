@@ -1,9 +1,15 @@
-﻿using System;
+﻿//#define Linux
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using System.IO;
+using Obisoft.OSS.Services;
+using Obisoft.OSS.Models;
+using Newtonsoft.Json;
+using System.Net;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -19,28 +25,47 @@ namespace Obisoft.OSS.Controllers
         }
 
         [HttpPost]
-        public async Task<JsonResult> Index(string id)
+        public async Task<JsonResult> Index(string token)
         {
             try
             {
-                var file = Request.Form.Files[0];
-                string fileExtension = Path.GetExtension(file.FileName).ToLower();
-                if (file != null && file.Length < 8192000)
+                HTTPService HTTP = new HTTPService();
+                HTTP.cc.Add(new Uri("https://www.obisoft.com.cn"), new Cookie("Token", token));
+                var Response = await HTTP.Get($"https://www.obisoft.com.cn/api/validatetoken");
+                Console.WriteLine(Response);
+                var Result = JsonConvert.DeserializeObject<ValidateToken>(Response);
+                if (Result.Code == 0)
                 {
-                    var _wwwroot = Directory.GetCurrentDirectory() + @"\wwwroot";
-                    var _filename = Path.GetFileName(file.FileName).Replace(" ","_");
-                    var _path = _wwwroot + @"\" + _filename;
-                    var _fileStream = new FileStream(path: _path, mode: FileMode.Create);
-                    await file.CopyToAsync(_fileStream);
-                    _fileStream.Dispose();
-                    var FileWebName = Request.Scheme + "://" + Request.Host.ToString() + Request.Path + _filename;
-                    return Json(new { path = FileWebName, code = 0 });
+                    var file = Request.Form.Files[0];
+                    string fileExtension = Path.GetExtension(file.FileName).ToLower();
+                    if (file != null && file.Length < 8192000)
+                    {
+                        var _filename = Path.GetFileName(file.FileName).Replace(" ", "_");
+
+                        #if (Linux)
+                        var _wwwroot = Directory.GetCurrentDirectory() + @"/wwwroot";
+                        var _path = _wwwroot + @"/" + _filename;
+                        #else
+                        var _wwwroot = Directory.GetCurrentDirectory() + @"\wwwroot";
+                        var _path = _wwwroot + @"\" + _filename;
+                        #endif
+
+                        var _fileStream = new FileStream(path: _path, mode: FileMode.Create);
+                        await file.CopyToAsync(_fileStream);
+                        _fileStream.Dispose();
+                        var FileWebName = Request.Scheme + "://" + Request.Host.ToString() + Request.Path + _filename;
+                        return Json(new { path = FileWebName, code = 0 });
+                    }
+                    return Json(new { Result = "Your file is larger than 819200!", code = -1 });
                 }
-                return Json(new { code = -1 });
+                else
+                {
+                    return Json(new { Result = "Error with your appid or appsecret", Code = -10 });
+                }
             }
             catch
             {
-                return Json(new { code = -4 });
+                return Json(new { code = -5 });
             }
         }
     }
