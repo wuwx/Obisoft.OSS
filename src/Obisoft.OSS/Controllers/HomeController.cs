@@ -11,14 +11,11 @@ using Obisoft.OSS.Models;
 using Newtonsoft.Json;
 using System.Net;
 
-// For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace Obisoft.OSS.Controllers
 {
     [RequireHttps]
     public class HomeController : Controller
     {
-        // GET: /<controller>/
         public IActionResult Index()
         {
             return View();
@@ -32,7 +29,6 @@ namespace Obisoft.OSS.Controllers
                 HTTPService HTTP = new HTTPService();
                 HTTP.cc.Add(new Uri("https://www.obisoft.com.cn"), new Cookie("Token", token));
                 var Response = await HTTP.Get($"https://www.obisoft.com.cn/api/validatetoken");
-                Console.WriteLine(Response);
                 var Result = JsonConvert.DeserializeObject<ValidateToken>(Response);
                 if (Result.Code == 0)
                 {

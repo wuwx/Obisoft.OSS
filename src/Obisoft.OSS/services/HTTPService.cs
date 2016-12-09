@@ -33,7 +33,7 @@ namespace Obisoft.OSS.Services
             var myStreamReader = new StreamReader(myResponseStream, Encoding.GetEncoding(Decode));
             string retString = await myStreamReader.ReadToEndAsync();
             myStreamReader.Dispose();
-            myResponseStream.Close();
+            myResponseStream.Dispose();
             return retString;
         }
 
@@ -67,7 +67,7 @@ namespace Obisoft.OSS.Services
             var myStreamReader = new StreamReader(myResponseStream, Encoding.GetEncoding(Coding));
             string retString = await myStreamReader.ReadToEndAsync();
             myStreamReader.Dispose();
-            myResponseStream.Close();
+            myResponseStream.Dispose();
             return retString;
         }
 
