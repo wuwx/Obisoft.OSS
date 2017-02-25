@@ -37,8 +37,15 @@ namespace Obisoft.OSS.Controllers
                     if (file != null && file.Length < 8192000)
                     {
                         var _filename = Path.GetFileName(file.FileName).Replace(" ", "_");
-                        var _wwwroot = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
-                        var _path = Path.Combine(_wwwroot, _filename);
+
+                        #if (Linux)
+                        var _wwwroot = Directory.GetCurrentDirectory() + @"/wwwroot";
+                        var _path = _wwwroot + @"/" + _filename;
+                        #else
+                        var _wwwroot = Directory.GetCurrentDirectory() + @"\wwwroot";
+                        var _path = _wwwroot + @"\" + _filename;
+                        #endif
+
                         var _fileStream = new FileStream(path: _path, mode: FileMode.Create);
                         await file.CopyToAsync(_fileStream);
                         _fileStream.Dispose();
